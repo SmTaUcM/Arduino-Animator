@@ -15,18 +15,70 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="6" column="6">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+    <item row="4" column="7">
+     <widget class="QLabel" name="lbl_currentColourRight">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);</string>
       </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
+      <property name="text">
+       <string/>
       </property>
-     </spacer>
+     </widget>
+    </item>
+    <item row="3" column="6">
+     <widget class="QPushButton" name="btn_openCPLeft">
+      <property name="text">
+       <string>Left Colour Picker</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="btn_nextFrame">
+      <property name="text">
+       <string>--&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6" colspan="2">
+     <widget class="QPushButton" name="btn_load">
+      <property name="text">
+       <string>Load Pixel Map</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="6">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Columns</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="7">
+     <widget class="QPushButton" name="btn_openCPRight">
+      <property name="text">
+       <string>Right Colour Picker</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="6" colspan="2">
+     <widget class="QPushButton" name="btn_export">
+      <property name="text">
+       <string>Export Pixel Map</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="6">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Rows</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
     </item>
     <item row="2" column="7">
      <widget class="QSpinBox" name="sb_rows">
@@ -41,12 +93,21 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="6" colspan="2">
-     <widget class="QPushButton" name="btn_export">
-      <property name="text">
-       <string>Export Pixel Map</string>
+    <item row="6" column="6">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-     </widget>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="0" rowspan="7" colspan="6">
+     <layout class="QGridLayout" name="gl_pixels"/>
     </item>
     <item row="1" column="7">
      <widget class="QSpinBox" name="sb_cols">
@@ -61,81 +122,10 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="6">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Rows</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="btn_prevFrame">
       <property name="text">
        <string>&lt;--</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="6">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Columns</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" rowspan="7" colspan="6">
-     <layout class="QGridLayout" name="gl_pixels"/>
-    </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="btn_nextFrame">
-      <property name="text">
-       <string>--&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2" colspan="2">
-     <widget class="QLabel" name="lbl_frame">
-      <property name="text">
-       <string>Frame 0</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="6" colspan="2">
-     <widget class="QPushButton" name="btn_load">
-      <property name="text">
-       <string>Load Pixel Map</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="7">
-     <widget class="QPushButton" name="btn_openCPRight">
-      <property name="text">
-       <string>Right Colour Picker</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="6">
-     <widget class="QPushButton" name="btn_openCPLeft">
-      <property name="text">
-       <string>Left Colour Picker</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="7">
-     <widget class="QLabel" name="lbl_currentColourRight">
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 0, 0);</string>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
       </property>
      </widget>
     </item>
@@ -152,6 +142,23 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="2">
+     <widget class="QLabel" name="lbl_frame">
+      <property name="text">
+       <string>Frame 0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2" colspan="2">
+     <widget class="QPushButton" name="btn_copy">
+      <property name="text">
+       <string>Copy C++ Code to Clipboard</string>
       </property>
      </widget>
     </item>

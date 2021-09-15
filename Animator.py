@@ -1,12 +1,12 @@
 '''#-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Name:        Animator.py
 # Purpose:
-# Version:     v1.00
-# Author:      Sgt. S. Macintosh - MSC System Engineers
+# Version:     v1.01
+# Author:      S. Macintosh
 #
 # Created:     13/09/2021
-# Copyright:   (c) Crown Copyright - MSC System Engineers 2021
-# Licence:     MSC System Engineers
+# Copyright:   Stuart Macintosh 2021
+# Licence:     GNU
 #-------------------------------------------------------------------------------------------------------------------------------------------------#'''
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -55,6 +55,7 @@ class Animator(QMainWindow):
         self.gui.sb_rows.valueChanged.connect(self.sbRowsFunc)
         self.gui.btn_export.clicked.connect(self.saveFrameData)
         self.gui.btn_load.clicked.connect(self.loadFrameData)
+        self.gui.btn_copy.clicked.connect(self.copy2clip)
 
         # Main program logic.
         self.createGrid()
@@ -273,6 +274,31 @@ class Animator(QMainWindow):
                             count += 1
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+
+    def copy2clip(self):
+        '''Method copies a string to the clipboard.'''
+
+        text = ""
+        data = []
+
+        # Save pixel data.
+        count = 0
+        for pixel in range(self.rows * self.cols):
+            for item in reversed(range(self.gui.gl_pixels.count())):
+                if self.gui.gl_pixels.itemAt(item).widget().text() == str(count):
+                    if self.gui.gl_pixels.itemAt(item).widget().styleSheet() != self.defaultColourStyleRight:
+                        colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().replace("background-color: rgb", "")
+                        data.append("leds[%s] = CRGB " % count + colour + "\n")
+                    count += 1
+
+        # Parse data to text.
+        for item in data:
+            text += item
+
+        cb = QApplication.clipboard()
+        cb.clear(mode=cb.Clipboard )
+        cb.setText(text, mode=cb.Clipboard)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
