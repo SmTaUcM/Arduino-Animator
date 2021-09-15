@@ -29,6 +29,12 @@ class ClickableLabel(QLabel):
         if event.button() == Qt.LeftButton:
             self.clicked.emit(self, "left")
 
-        if event.button() == Qt.RightButton:
+        elif event.button() == Qt.RightButton:
             self.clicked.emit(self, "right")
+
+        elif event.button() == Qt.MiddleButton:
+            self.clicked.emit(self, "middle")
+
+        else:
+            self.clicked.emit(self, "none")
     #------------------------------------------------------------------------------------------------------------------------------------------------#

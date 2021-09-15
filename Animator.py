@@ -43,10 +43,12 @@ class Animator(QMainWindow):
         self.cols = 10
         self.rows = 10
         self.gui.setWindowTitle("Arduino Animator v1.0.1a")
+        self.gui.btn_exportSelection.setEnabled(False)
 
         # Declare instance variables.
         self.selectedColourLeft = self.defaultColourLeft
         self.selectedColourRight = self.defaultColourRight
+        self.selectedPixels = 0
 
         # Dialog connections.
         self.gui.btn_openCPLeft.clicked.connect(self.openColourPickerLeft)
@@ -56,6 +58,7 @@ class Animator(QMainWindow):
         self.gui.btn_export.clicked.connect(self.saveFrameData)
         self.gui.btn_load.clicked.connect(self.loadFrameData)
         self.gui.btn_copy.clicked.connect(self.copy2clip)
+        self.gui.btn_exportSelection.clicked.connect(self.exportSelection)
 
         # Main program logic.
         self.createGrid()
@@ -142,20 +145,71 @@ class Animator(QMainWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def setColour(self, sender, value=None):
+    def setColour(self, sender, value):
         '''Method that sets the clicked pixel labels to the currently selected colour.'''
 
         if value == "left":
             realRGB = self.selectedColourLeft.getRgb()
         elif value == "right":
             realRGB = self.selectedColourRight.getRgb()
+        elif value == "middle":
+            self.selectPixel(sender)
+            return # Stops the rest of this function from triggering.
 
         # Convert values.
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
         # Apply values to GUI.
-        sender.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        selection = sender.styleSheet().split("\n")[1::]
+        colour = "background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2])
+        for item in selection:
+            colour += "\n" + item
+        sender.setStyleSheet(colour)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def selectPixel(self, pixel):
+        '''Method that selects or deselects a pixel upon middle mouse click.'''
+
+        currentStyle = pixel.styleSheet()
+        border = "\nborder-style: outset;\nborder-width: 6px;\nborder-color: rgb(0, 255, 0);"
+
+        if border in currentStyle:
+            pixel.setStyleSheet(currentStyle.split("\n")[0])
+            self.selectedPixels -= 1
+        else:
+            pixel.setStyleSheet(currentStyle + border)
+            self.selectedPixels += 1
+
+        if self.selectedPixels == 0:
+            self.gui.btn_exportSelection.setEnabled(False)
+        else:
+            self.gui.btn_exportSelection.setEnabled(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def exportSelection(self):
+        '''Method saves the colour data for the selected pixels.'''
+
+        data = []
+
+        # Save pixel data.
+        count = 0
+        for pixel in range(self.rows * self.cols):
+            for item in reversed(range(self.gui.gl_pixels.count())):
+                if self.gui.gl_pixels.itemAt(item).widget().text() == str(count):
+                    if "border" in self.gui.gl_pixels.itemAt(item).widget().styleSheet():
+                        colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().split("\n")[0].replace("background-color: rgb", "")
+                        data.append("leds[%s] = CRGB " % count + colour + "\n")
+                    count += 1
+
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        saveName, ext = QFileDialog.getSaveFileName(self, "Save Export File", os.getcwd() + "\\export.txt", "*.txt", options=options)
+        with open(saveName, "w") as dataFile:
+            dataFile.writelines(data)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 
 
     def clearGrid(self):
