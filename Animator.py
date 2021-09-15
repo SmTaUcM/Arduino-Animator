@@ -52,7 +52,9 @@ class Animator(QMainWindow):
 
         # Dialog connections.
         self.gui.btn_openCPLeft.clicked.connect(self.openColourPickerLeft)
+        self.gui.lbl_currentColourLeft.clicked.connect(self.openColourPickerLeft)
         self.gui.btn_openCPRight.clicked.connect(self.openColourPickerRight)
+        self.gui.lbl_currentColourRight.clicked.connect(self.openColourPickerRight)
         self.gui.sb_cols.valueChanged.connect(self.sbColsFunc)
         self.gui.sb_rows.valueChanged.connect(self.sbRowsFunc)
         self.gui.btn_export.clicked.connect(self.saveFrameData)
@@ -203,11 +205,14 @@ class Animator(QMainWindow):
                         data.append("leds[%s] = CRGB " % count + colour + "\n")
                     count += 1
 
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        saveName, ext = QFileDialog.getSaveFileName(self, "Save Export File", os.getcwd() + "\\export.txt", "*.txt", options=options)
-        with open(saveName, "w") as dataFile:
-            dataFile.writelines(data)
+        # Parse data to text.
+        text = ""
+        for item in data:
+            text += item
+
+        cb = QApplication.clipboard()
+        cb.clear(mode=cb.Clipboard )
+        cb.setText(text, mode=cb.Clipboard)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -249,20 +254,25 @@ class Animator(QMainWindow):
         for pixel in range(self.rows * self.cols):
             for item in reversed(range(self.gui.gl_pixels.count())):
                 if self.gui.gl_pixels.itemAt(item).widget().text() == str(count):
-                    colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().replace("background-color: rgb", "")
+                    colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().split("\n")[0].replace("background-color: rgb", "")
                     data.append("leds[%s] = CRGB " % count + colour + "\n")
                     count += 1
 
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         saveName, ext = QFileDialog.getSaveFileName(self, "Save Export File", os.getcwd() + "\\export.txt", "*.txt", options=options)
-        with open(saveName, "w") as dataFile:
-            dataFile.writelines(data)
+        if saveName:
+            with open(saveName, "w") as dataFile:
+                dataFile.writelines(data)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def loadFrameData(self):
         '''Method saves the colour data for the current frame.'''
+
+        # Reset any selections.
+        self.selectedPixels = 0
+        self.gui.btn_exportSelection.setEnabled(False)
 
         # Get the file to be opened.
         options = QFileDialog.Options()
@@ -334,14 +344,16 @@ class Animator(QMainWindow):
 
         text = ""
         data = []
+        bgColour = self.selectedColourRight.getRgb()
+        bgStyle = "background-color: rgb(%s, %s, %s);" % (bgColour[0], bgColour[1], bgColour[2])
 
         # Save pixel data.
         count = 0
         for pixel in range(self.rows * self.cols):
             for item in reversed(range(self.gui.gl_pixels.count())):
                 if self.gui.gl_pixels.itemAt(item).widget().text() == str(count):
-                    if self.gui.gl_pixels.itemAt(item).widget().styleSheet() != self.defaultColourStyleRight:
-                        colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().replace("background-color: rgb", "")
+                    if self.gui.gl_pixels.itemAt(item).widget().styleSheet() != bgStyle:
+                        colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().split("\n")[0].replace("background-color: rgb", "")
                         data.append("leds[%s] = CRGB " % count + colour + "\n")
                     count += 1
 
