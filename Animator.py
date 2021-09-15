@@ -42,7 +42,7 @@ class Animator(QMainWindow):
         self.gui.show()
         self.cols = 10
         self.rows = 10
-        self.gui.setWindowTitle("Arduino Animator v1.0.1a")
+        self.gui.setWindowTitle("Arduino Animator v1.0.2a")
         self.gui.btn_exportSelection.setEnabled(False)
 
         # Declare instance variables.
