@@ -1,12 +1,12 @@
 '''#-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Name:        Animator.py
 # Purpose:
-# Version:     v1.00
-# Author:      Sgt. S. Macintosh - MSC System Engineers
+# Version:     v1.01
+# Author:      S. Macintosh
 #
 # Created:     13/09/2021
-# Copyright:   (c) Crown Copyright - MSC System Engineers 2021
-# Licence:     MSC System Engineers
+# Copyright:   Stuart Macintosh 2021
+# Licence:     GNU
 #-------------------------------------------------------------------------------------------------------------------------------------------------#'''
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -30,23 +30,32 @@ class Animator(QMainWindow):
     def __init__(self):
         '''Main program object.'''
 
+        # Settings.
+        self.defaultColourStyleRight = "background-color: rgb(0, 0, 0);"
+        self.defaultColourRight = QColor(0, 0, 0)
+        self.defaultColourStyleLeft = "background-color: rgb(255, 255, 255);"
+        self.defaultColourLeft = QColor(255, 255, 255)
+
         # Show GUI.
         QMainWindow.__init__(self)
         self.gui = uic.loadUi(r"gui.ui")
         self.gui.show()
-        self.cols = 4
-        self.rows = 4
+        self.cols = 10
+        self.rows = 10
+        self.gui.setWindowTitle("Arduino Animator v1.0.1a")
 
         # Declare instance variables.
-        self.selectedColour = QColor(255, 255, 255)
-        self.pixels = []
+        self.selectedColourLeft = self.defaultColourLeft
+        self.selectedColourRight = self.defaultColourRight
 
         # Dialog connections.
-        self.gui.btn_openCP.clicked.connect(self.openColourPicker)
+        self.gui.btn_openCPLeft.clicked.connect(self.openColourPickerLeft)
+        self.gui.btn_openCPRight.clicked.connect(self.openColourPickerRight)
         self.gui.sb_cols.valueChanged.connect(self.sbColsFunc)
         self.gui.sb_rows.valueChanged.connect(self.sbRowsFunc)
         self.gui.btn_export.clicked.connect(self.saveFrameData)
         self.gui.btn_load.clicked.connect(self.loadFrameData)
+        self.gui.btn_copy.clicked.connect(self.copy2clip)
 
         # Main program logic.
         self.createGrid()
@@ -56,14 +65,12 @@ class Animator(QMainWindow):
     def createGrid(self):
         '''Method to dynamically create the pixel grid.'''
 
-        self.pixels = []
         for row in range(self.rows):
             for col in range(self.cols):
                 label = clickablelabel.ClickableLabel()
-                label.setStyleSheet("background-color: rgb(255, 255, 255);")
+                label.setStyleSheet(self.defaultColourStyleRight)
                 self.gui.gl_pixels.addWidget(label, row, col)
                 label.clicked.connect(self.setColour)
-                self.pixels.append(label)
 
         # Label the grids.
         count = 0
@@ -97,30 +104,53 @@ class Animator(QMainWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def openColourPicker(self, pixel):
-        '''Method to open the QColorDialog.'''
+    def openColourPickerLeft(self):
+        '''Method to open the Left QColorDialog.'''
 
         # Open the colour picker.
         self.colourDlg = QColorDialog()
         self.colourDlg.show()
         # Connections.
-        self.colourDlg.accepted.connect(lambda: self.colourAccepted(self.colourDlg.currentColor()))
+        self.colourDlg.accepted.connect(lambda: self.colourAcceptedLeft(self.colourDlg.currentColor()))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def colourAccepted(self, colour):
+    def openColourPickerRight(self):
+        '''Method to open the Right QColorDialog.'''
+
+        # Open the colour picker.
+        self.colourDlg = QColorDialog()
+        self.colourDlg.show()
+        # Connections.
+        self.colourDlg.accepted.connect(lambda: self.colourAcceptedRight(self.colourDlg.currentColor()))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def colourAcceptedLeft(self, colour):
         '''Method to save the QColorDialog selected colur.'''
 
-        self.selectedColour = colour
-        self.setColour(self.gui.lbl_currentColour)
+        self.selectedColourLeft = colour
+        self.setColour(self.gui.lbl_currentColourLeft, "left")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def setColour(self, sender):
+    def colourAcceptedRight(self, colour):
+        '''Method to save the QColorDialog selected colur.'''
+
+        self.selectedColourRight = colour
+        self.setColour(self.gui.lbl_currentColourRight, "right")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def setColour(self, sender, value=None):
         '''Method that sets the clicked pixel labels to the currently selected colour.'''
 
+        if value == "left":
+            realRGB = self.selectedColourLeft.getRgb()
+        elif value == "right":
+            realRGB = self.selectedColourRight.getRgb()
+
         # Convert values.
-        realRGB = self.selectedColour.getRgb()
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
         # Apply values to GUI.
@@ -244,6 +274,31 @@ class Animator(QMainWindow):
                             count += 1
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+
+    def copy2clip(self):
+        '''Method copies a string to the clipboard.'''
+
+        text = ""
+        data = []
+
+        # Save pixel data.
+        count = 0
+        for pixel in range(self.rows * self.cols):
+            for item in reversed(range(self.gui.gl_pixels.count())):
+                if self.gui.gl_pixels.itemAt(item).widget().text() == str(count):
+                    if self.gui.gl_pixels.itemAt(item).widget().styleSheet() != self.defaultColourStyleRight:
+                        colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().replace("background-color: rgb", "")
+                        data.append("leds[%s] = CRGB " % count + colour + "\n")
+                    count += 1
+
+        # Parse data to text.
+        for item in data:
+            text += item
+
+        cb = QApplication.clipboard()
+        cb.clear(mode=cb.Clipboard )
+        cb.setText(text, mode=cb.Clipboard)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
