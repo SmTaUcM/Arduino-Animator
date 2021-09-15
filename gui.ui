@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>807</width>
+    <width>909</width>
     <height>600</height>
    </rect>
   </property>
@@ -15,16 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="4" colspan="2">
-     <widget class="QPushButton" name="btn_load">
-      <property name="text">
-       <string>Load Pixel Map</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" rowspan="8" colspan="4">
-     <layout class="QGridLayout" name="gl_pixels"/>
-    </item>
     <item row="4" column="4">
      <widget class="ClickableLabel" name="lbl_currentColourLeft">
       <property name="minimumSize">
@@ -41,8 +31,28 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="4">
+     <widget class="QPushButton" name="btn_openCPLeft">
+      <property name="text">
+       <string>Left Colour Picker</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="QSpinBox" name="sb_cols">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>10</number>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="5">
-     <widget class="QLabel" name="lbl_currentColourRight">
+     <widget class="ClickableLabel" name="lbl_currentColourRight">
       <property name="styleSheet">
        <string notr="true">background-color: rgb(0, 0, 0);</string>
       </property>
@@ -51,10 +61,10 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="4">
-     <widget class="QPushButton" name="btn_openCPLeft">
+    <item row="9" column="0" colspan="2">
+     <widget class="QPushButton" name="btn_copy">
       <property name="text">
-       <string>Left Colour Picker</string>
+       <string>Copy Grid to Clipboard (Excluding Right Colour)</string>
       </property>
      </widget>
     </item>
@@ -68,53 +78,10 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="5">
-     <widget class="QSpinBox" name="sb_rows">
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="value">
-       <number>4</number>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="5">
-     <widget class="QSpinBox" name="sb_cols">
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="value">
-       <number>4</number>
-      </property>
-     </widget>
-    </item>
-    <item row="9" column="1" colspan="2">
-     <widget class="QPushButton" name="btn_copy">
+    <item row="9" column="2" colspan="2">
+     <widget class="QPushButton" name="btn_exportSelection">
       <property name="text">
-       <string>Copy C++ Code to Clipboard</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="4">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Rows</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="8" column="4" colspan="2">
-     <widget class="QPushButton" name="btn_export">
-      <property name="text">
-       <string>Export Pixel Map</string>
+       <string>Copy Selection (Middle Click) to Clipboard</string>
       </property>
      </widget>
     </item>
@@ -138,10 +105,43 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="4" colspan="2">
-     <widget class="QPushButton" name="btn_exportSelection">
+    <item row="0" column="4" colspan="2">
+     <widget class="QPushButton" name="btn_load">
       <property name="text">
-       <string>Export Selection (Middle Click)</string>
+       <string>Load Pixel Map from File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QSpinBox" name="sb_rows">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>10</number>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="4">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Rows</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="9" colspan="4">
+     <layout class="QGridLayout" name="gl_pixels"/>
+    </item>
+    <item row="9" column="4" colspan="2">
+     <widget class="QPushButton" name="btn_export">
+      <property name="text">
+       <string>Save Pixel Map to File</string>
       </property>
      </widget>
     </item>
