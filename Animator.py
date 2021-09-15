@@ -352,7 +352,7 @@ class Animator(QMainWindow):
         for pixel in range(self.rows * self.cols):
             for item in reversed(range(self.gui.gl_pixels.count())):
                 if self.gui.gl_pixels.itemAt(item).widget().text() == str(count):
-                    if self.gui.gl_pixels.itemAt(item).widget().styleSheet() != bgStyle:
+                    if self.gui.gl_pixels.itemAt(item).widget().styleSheet().split("\n")[0] != bgStyle:
                         colour = self.gui.gl_pixels.itemAt(item).widget().styleSheet().split("\n")[0].replace("background-color: rgb", "")
                         data.append("leds[%s] = CRGB " % count + colour + "\n")
                     count += 1
