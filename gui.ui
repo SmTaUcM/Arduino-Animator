@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>807</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Animator</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="5" column="6" colspan="2">
+     <widget class="ClickableLabel" name="lbl_currentColour">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="6">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="7">
+     <widget class="QSpinBox" name="sb_rows">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>4</number>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="6" colspan="2">
+     <widget class="QPushButton" name="btn_export">
+      <property name="text">
+       <string>Export Pixel Map</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="7">
+     <widget class="QSpinBox" name="sb_cols">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>4</number>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="6" colspan="2">
+     <widget class="QPushButton" name="btn_openCP">
+      <property name="text">
+       <string>Open Colour Picker</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="6">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Rows</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="btn_prevFrame">
+      <property name="text">
+       <string>&lt;--</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="6">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Columns</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" rowspan="7" colspan="6">
+     <layout class="QGridLayout" name="gl_pixels"/>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="btn_nextFrame">
+      <property name="text">
+       <string>--&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="2">
+     <widget class="QLabel" name="lbl_frame">
+      <property name="text">
+       <string>Frame 0</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6" colspan="2">
+     <widget class="QPushButton" name="btn_load">
+      <property name="text">
+       <string>Load Pixel Map</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
