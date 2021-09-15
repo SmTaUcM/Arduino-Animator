@@ -21,10 +21,14 @@ class ClickableLabel(QLabel):
     '''Class overloading the original QLabel class to alow clicking of the label to emit a signal.'''
 
     # Declare class variables.
-    clicked = pyqtSignal(object)
+    clicked = pyqtSignal(object, str)
 
     def mousePressEvent(self, event):
         '''Actions to take upon the mouse click event being triggered.'''
 
-        self.clicked.emit(self)
+        if event.button() == Qt.LeftButton:
+            self.clicked.emit(self, "left")
+
+        if event.button() == Qt.RightButton:
+            self.clicked.emit(self, "right")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
